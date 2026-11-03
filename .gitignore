@@ -1,0 +1,8 @@
+node_modules/
+dist/
+outputs/*.json
+!outputs/.gitkeep
+datasets/*.txt
+datasets/reference/*.json
+!.gitkeep
+.npm-cache/
