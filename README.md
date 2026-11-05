@@ -16,7 +16,7 @@ npm run download
 npm start
 ```
 
-`npm run download` baixa os sete datasets oficiais e as referências 1 e 2 para `datasets/` e `datasets/reference/`. Se já tiver os arquivos, coloque-os nesses caminhos. `npm start` processa todos os sete arquivos e grava `outputs/respostas1.json` até `respostas7.json`.
+Os sete arquivos de resposta estão incluídos em `outputs/`. Os datasets originais e as respostas de referência não são versionados: além de desnecessários para executar os testes, os datasets são muito grandes. Para gerar os resultados novamente, baixe os dados com `npm run download` (são vários arquivos grandes) ou coloque os datasets em `datasets/`; então execute `npm start` para processar os sete arquivos e gravar `outputs/respostas1.json` até `respostas7.json`.
 
 Para processar somente um arquivo:
 
@@ -44,7 +44,7 @@ src/
   validate.ts    comparação com respostas de referência
   detector.test.ts
 datasets/        arquivos oficiais (não versionados)
-outputs/         JSONs produzidos (não versionados)
+outputs/         respostas JSON geradas e incluídas na entrega
 ```
 
 ## Regras e decisões técnicas
@@ -61,8 +61,8 @@ Cada par elegível gera uma única categoria: `protetiva` quando um dos registro
 
 `npm run validate` compara chaves de categoria, timestamp e IDs sem considerar a ordem dos IDs, e imprime verdadeiros positivos, falsos positivos, falsos negativos, duplicidades, divergências de coordenadas/distância, score F1 e tempo. Coordenadas são comparadas exatamente; a distância tolera diferença de até `1e-9` m. O relatório exibe divergências por chave para investigação.
 
-Os datasets oficiais são necessários para uma validação real. A etapa de download depende de acesso à internet ao bucket S3. Não há resultados de validação declarados neste repositório sem executar o algoritmo sobre esses dados.
+Os datasets e as referências oficiais não estão incluídos no repositório. Para validar, execute `npm run download` e depois `npm run validate`; o download depende de acesso à internet ao bucket S3. A solução foi comparada com as referências oficiais dos datasets 1 e 2: ambos tiveram correspondência completa, sem falsos positivos, falsos negativos, duplicidades ou divergências de coordenadas e distância.
 
 ## Limites conhecidos
 
-O parser é streaming, mas o detector mantém grupos por timestamp para suportar entradas fora de ordem. Portanto, o pico de memória depende do tamanho total do arquivo. A grade espacial reduz drasticamente comparações em distribuição geográfica esparsa; em áreas extremamente densas, muitos pares ainda precisam ser verificados para garantir precisão. A interpretação de classificações simultâneas (mais de um tipo para a mesma dupla) deve ser confirmada contra as referências oficiais na primeira validação.
+O parser é streaming, mas o detector mantém grupos por timestamp para suportar entradas fora de ordem. Portanto, o pico de memória depende do tamanho total do arquivo. A grade espacial reduz drasticamente comparações em distribuição geográfica esparsa; em áreas extremamente densas, muitos pares ainda precisam ser verificados para garantir precisão. Quando mais de uma categoria se aplica ao mesmo par, o detector emite apenas a categoria mais específica, conforme confirmado pelas referências dos datasets 1 e 2.
