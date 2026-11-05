@@ -7,18 +7,26 @@ Aplicação em Node.js e TypeScript que identifica proximidade física entre reg
 - Node.js 20 ou superior (usa `fetch` nativo).
 - npm.
 
-## Instalação e execução
+## Conferir a entrega
+
+```sh
+npm install
+npm test
+```
+
+Os sete resultados pedidos estão prontos em `outputs/respostas1.json` até `outputs/respostas7.json`. Conforme as instruções de entrega, **os datasets de entrada não estão incluídos no repositório**; somente o código-fonte, os arquivos necessários para instalar e testar o projeto e os JSONs de resposta estão versionados.
+
+## Executar novamente com os datasets
+
+Para regenerar os resultados, obtenha os arquivos de entrada fornecidos pela organização e coloque `dataset1.txt` até `dataset7.txt` na pasta `datasets/`. Alternativamente, baixe todos os datasets e as referências oficiais com `npm run download` — esse comando baixa mais de 1 GB de dados. Depois, execute:
 
 ```sh
 npm install
 npm run build
-npm run download
 npm start
 ```
 
-Os sete arquivos de resposta estão incluídos em `outputs/`. Os datasets originais e as respostas de referência não são versionados: além de desnecessários para executar os testes, os datasets são muito grandes. Para gerar os resultados novamente, baixe os dados com `npm run download` (são vários arquivos grandes) ou coloque os datasets em `datasets/`; então execute `npm start` para processar os sete arquivos e gravar `outputs/respostas1.json` até `respostas7.json`.
-
-Para processar somente um arquivo:
+Para processar somente um dataset já colocado em `datasets/`:
 
 ```sh
 npm run build
@@ -28,8 +36,8 @@ npm run process -- datasets/dataset1.txt
 Outros comandos:
 
 - `npm test`: compila e executa os testes unitários nativos do Node.
-- `npm run validate`: compara os resultados dos datasets 1 e 2 com as respostas oficiais.
-- `npm run download`: baixa datasets e referências oficiais.
+- `npm run validate`: compara os resultados dos datasets 1 e 2 com as respostas oficiais; requer os datasets e os JSONs de referência em `datasets/` e `datasets/reference/`.
+- `npm run download`: baixa os sete datasets de entrada e as duas referências oficiais; requer acesso à internet e espaço para mais de 1 GB.
 
 ## Organização
 
@@ -61,7 +69,7 @@ Cada par elegível gera uma única categoria: `protetiva` quando um dos registro
 
 `npm run validate` compara chaves de categoria, timestamp e IDs sem considerar a ordem dos IDs, e imprime verdadeiros positivos, falsos positivos, falsos negativos, duplicidades, divergências de coordenadas/distância, score F1 e tempo. Coordenadas são comparadas exatamente; a distância tolera diferença de até `1e-9` m. O relatório exibe divergências por chave para investigação.
 
-Os datasets e as referências oficiais não estão incluídos no repositório. Para validar, execute `npm run download` e depois `npm run validate`; o download depende de acesso à internet ao bucket S3. A solução foi comparada com as referências oficiais dos datasets 1 e 2: ambos tiveram correspondência completa, sem falsos positivos, falsos negativos, duplicidades ou divergências de coordenadas e distância.
+Os datasets e as referências oficiais não estão incluídos no repositório, conforme as orientações de entrega. Para repetir a validação, obtenha os arquivos e execute `npm run validate`; alternativamente, `npm run download` baixa os arquivos do bucket S3 e requer mais de 1 GB de espaço. A solução foi comparada com as referências oficiais dos datasets 1 e 2: ambos tiveram correspondência completa, sem falsos positivos, falsos negativos, duplicidades ou divergências de coordenadas e distância.
 
 ## Limites conhecidos
 
